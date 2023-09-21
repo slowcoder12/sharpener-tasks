@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking Appointment App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding-right: 40px; /* Add padding to the right */
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        text-align: left;
+      }
+
+      input[type="text"],
+      input[type="tel"],
+      input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Booking Appointment App</h1>
+      <form action="" method="post" id="form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <div id="userList"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Fetch user data when the page loads
+      window.addEventListener("load", () => {
+        axios
+          .get("http://localhost:3000/users")
+          .then((response) => {
+            const users = response.data;
+            displayUsers(users);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+      const form = document.getElementById("form");
+      const userList = document.getElementById("userList"); // Added userList variable declaration
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        let user = document.getElementById("username").value;
+        let phone = document.getElementById("phone").value;
+        let email = document.getElementById("email").value;
+
+        let obj = { user, phone, email };
+
+        axios
+          .post("http://localhost:3000/add", obj)
+          .then((response) => {
+            console.log(response);
+
+            const li = document.createElement("li");
+            li.innerHTML = `Username: ${user} - Phone Number: ${phone} - Email: ${email}`;
+            userList.appendChild(li);
+
+            axios
+              .get("http://localhost:3000/users")
+              .then((response) => {
+                const users = response.data;
+                displayUsers(users);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+
+            document.getElementById("username").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("email").value = "";
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      function displayUsers(users) {
+        userList.innerHTML = "";
+        users.forEach((user) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+        Username: ${user.username}- Phone Number:${user.phone}- Email: ${user.email}<button onclick="deleteUser(${user.id})">Delete</button>
+      `;
+          userList.appendChild(li);
+        });
+      }
+
+      function deleteUser(userId) {
+        axios
+          .delete(`http://localhost:3000/users/${userId}`)
+          .then(() => {
+            // Refresh the user list after successful deletion
+            axios
+              .get("http://localhost:3000/users")
+              .then((response) => {
+                const users = response.data;
+                displayUsers(users);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    </script>
+  </body>
+</html>
