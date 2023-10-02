@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket Careers</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+        <div class="container">
+        <form id="player-info">
+          <h1>Player Information</h1>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="dob">Date of Birth:</label>
+          <input type="text" id="dob" name="dob" required />
+
+          <label for="photourl">Photo URL:</label>
+          <input type="text" id="photourl" name="photourl" />
+
+          <label for="birthplace">Birthplace:</label>
+          <input type="text" id="birthplace" name="birthplace" />
+
+          <label for="career">Career:</label>
+          <textarea id="career" name="career" rows="4"></textarea>
+
+          <label for="matches">Number of Matches:</label>
+          <input type="number" id="matches" name="matches" />
+
+          <label for="score">Score:</label>
+          <input type="number" id="score" name="score" />
+
+          <label for="fifties">Fifties:</label>
+          <input type="number" id="fifties" name="fifties" />
+
+          <label for="centuries">Centuries:</label>
+          <input type="number" id="centuries" name="centuries" />
+
+          <label for="wickets">Wickets:</label>
+          <input type="number" id="wickets" name="wickets" />
+
+          <label for="average">Average:</label>
+          <input type="number" id="average" name="average" />
+
+          <br />
+          <button type="submit" id="submit-button">Submit</button>
+        </form>
+
+      </div>
+        <hr>
+        <div class="search-form">
+        <form action="" id="search-info">
+        <label for=search-name">Search Player: </label>
+        
+           <input type="text" id="search-name" name="search-name" required />
+            <button type="submit" id="search-submit">Search</button>
+        </form>
+      </div>
+
+        <div id="player-data"></div>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+       <script src="script.js" defer></script>
+
+      </body>
+    </html>
+  </body>
+</html>
